@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 170px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        position: absolute;
+        top: 150px;
+        left: 50%;
+        transform: translateX(-50%);
+        }
+
+        #imageForm {
+            margin-bottom: 20px;
+        }
+
+        #prediction {
+            font-weight: bold;
+            color: #009688;
+            position: absolute;
+        top: 500px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            display: block;
+            background-color: #009688;
+            color: #fff;
+            padding: 25px 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button[type="button"] {
+            background-color: #009688;
+            color: #fff;
+            border: none;
+            padding: 25px 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Classifier</h1>
+        <form id="imageForm" method="POST" enctype="multipart/form-data">
+            <label for="imageFile">Upload Image</label>
+            <input type="file" name="imageFile" id="imageFile">
+            <button type="button" onclick="predict()">Predict</button>
+        </form>
+        <div id="prediction"></div>
+    </div>
+
+    <script>
+        function predict() {
+            var formData = new FormData(document.getElementById('imageForm'));
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('prediction').innerHTML = 'Predicted Number: ' + data.prediction;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
